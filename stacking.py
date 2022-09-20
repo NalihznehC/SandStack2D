@@ -7,12 +7,15 @@ Created on Tue Sep  6 02:13:30 2022
 import numpy as np
 #import math
 
-AA = np.array([12,12,11,10],dtype=int)
-AB = np.array([12,15,1,7],dtype=int)
+#Individual data initializer
+AA = np.array([0,0,0,0],dtype=int)
+AB = np.array([0,0,0,0],dtype=int)
 BA = np.array([0,0,0,0],dtype=int)
-BB = np.array([14,8,13,10],dtype=int)
-
+BB = np.array([0,0,0,0],dtype=int)
+#Real data saver
 OO = np.array([AA,AB,BA,BB])
+
+#Table painter
 v999 = " │ "
 v0 = "   "
 v1 = "┃ "
@@ -27,6 +30,7 @@ lA = "┏━━━┯━━━┓"
 lC = "┠─ ─┼─ ─┨"
 lE = "┗━━━┷━━━┛"
 
+#Hex Convert
 def hexcnv(val):
     if val < 0: return("error")
     elif val < 10: return(str(val))
@@ -38,6 +42,7 @@ def hexcnv(val):
     elif val == 15: return("F")
     else: return("error") 
 
+#Print Table
 def tablePrint():
     l2 = v1 + hexcnv(OO[0][0]) + v0 + hexcnv(OO[0][1]) + v2 + hexcnv(OO[1][0]) + v0 + hexcnv(OO[1][1]) + v3
     l4 = v1 + hexcnv(OO[0][2]) + v0 + hexcnv(OO[0][3]) + v2 + hexcnv(OO[1][2]) + v0 + hexcnv(OO[1][3]) + v3
@@ -53,6 +58,7 @@ def tablePrint():
     print(l8)
     print(l9)
 
+#Print Layer
 def layerPrint(Layer):
     LayerT = np.array(["","","",""],dtype=str)
     for i in range(4):
@@ -66,7 +72,8 @@ def layerPrint(Layer):
     print(lC)
     print(lD)
     print(lE)
-    
+
+#Read Layer
 def layerRead(ix, h, prnt = False):
     Layer = OO[ix] - h
     for i in range(4):
@@ -74,7 +81,8 @@ def layerRead(ix, h, prnt = False):
         else: Layer[i] = 1
     if prnt: layerPrint(Layer)
     return(Layer)
-    
+
+#Input Integer
 def Inint(prompt, maxv, minv = 0):
     flag = True
     while flag:
@@ -89,7 +97,8 @@ def Inint(prompt, maxv, minv = 0):
         else:
             print("Invalid Input.")
     return(Vt)
-    
+
+#User Interface for Layer Add
 def LASelect():
     print("Layer add selection")
     val = np.array([0,0,0,0], dtype=int)
@@ -122,16 +131,19 @@ def LASelect():
     print("Current table:")
     layerAdd(ix, val)
 
+#Layer Add
 def layerAdd(ix, val, prnt = True):
     OO[ix] += val
     if prnt: tablePrint()
 
+#Layer Translate
 def layerTranslate(fromIx, toIx, fromH, prnt = False):
     Layer = layerRead(fromIx, fromH)
     layerAdd(toIx, Layer)
     layerAdd(fromIx, -1 * Layer)
     if prnt: tablePrint()
 
+#Layer Rotate
 def LayerRotate(ix, h, r, prnt = False):
     CC = layerRead(OO[ix], h)
     DD = np.array([0,0,0,0])
@@ -140,7 +152,9 @@ def LayerRotate(ix, h, r, prnt = False):
         DD[j] = CC[i]
     OO[ix] = OO[ix] - CC + DD
     if prnt: tablePrint()
-    
+
+#Main
 tablePrint()
 layerRead(0,1,True)
 LASelect()
+#End Main
